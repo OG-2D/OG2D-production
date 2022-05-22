@@ -6,5 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class LoadScene : MonoBehaviour
 {
-    public void Load(int level) => SceneManager.LoadScene(level);
+    public Main main;
+
+    public void Load(int level)
+    {
+        if (level == 1)
+        {
+            SceneManager.LoadScene(level);
+            main.GetComponent<Main>().PauseOff();
+        }
+
+    }
+  //  => 
 }
