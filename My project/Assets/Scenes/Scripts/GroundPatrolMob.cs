@@ -17,7 +17,7 @@ public class GroundPatrolMob : MonoBehaviour
     void Update()
     {
         transform.Translate(speed * Time.deltaTime * Vector2.left);
-        RaycastHit2D groundInfo = Physics2D.Raycast(groundDetect.position, Vector2.down, 0.05f);
+        RaycastHit2D groundInfo = Physics2D.Raycast(groundDetect.position, Vector2.down, 0.3f);
 
         if (!groundInfo.collider)
             if (moveLeft)
