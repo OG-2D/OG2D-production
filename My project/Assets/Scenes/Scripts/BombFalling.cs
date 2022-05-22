@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BombFalling : MonoBehaviour
 {
-    float speedFalling = 6f;
-    float timeToDisable = 8f;
+    readonly float speedFalling = 6f;
+    readonly float timeToDisable = 6f;
     // Start is called before the first frame update
     void Start() => StartCoroutine(SetDisable());
 

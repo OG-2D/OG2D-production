@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript1 : MonoBehaviour
 {
@@ -14,7 +15,8 @@ public class PlayerScript1 : MonoBehaviour
     int maxHP = 3;
     bool isHit = false;
     public Main main;
-    private bool isClimbing;
+    private bool isClimbing = false;
+    public bool leveler = false;
 
     // Start is called before the first frame update
     void Start()
@@ -30,12 +32,12 @@ public class PlayerScript1 : MonoBehaviour
         Flip();
         Jump();
         CheckGroun();
-        if (Input.GetAxis("Horizontal") == 0 && isGrounded && currentHP > 0) //анимация покоя 
+        if (Input.GetAxis("Horizontal") == 0 && isGrounded && currentHP > 0 && !isClimbing) //анимация покоя 
             animation.SetInteger("State", 1);
         else
         {
             Flip();
-            if (isGrounded && currentHP > 0) //включение анимации бега
+            if (isGrounded && currentHP > 0 && !isClimbing) //включение анимации бега
                 animation.SetInteger("State", 2);
         }
     }
@@ -53,7 +55,7 @@ public class PlayerScript1 : MonoBehaviour
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, 0.1f);
         isGrounded = colliders.Length > 1;
-        if (!isGrounded && currentHP > 0 && !isHit) //включение анимации прыжка
+        if (!isGrounded && currentHP > 0 && !isHit && !isClimbing) //включение анимации прыжка
             animation.SetInteger("State", 3);
     }
 
@@ -105,22 +107,43 @@ public class PlayerScript1 : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Ladder" && Input.GetAxis("Vertical") != 0)
+        if (collision.gameObject.CompareTag("Ladder") && Input.GetAxis("Vertical") != 0)
         {
             isClimbing = true;
             player.bodyType = RigidbodyType2D.Kinematic;
-            animation.SetInteger("State", 4);
+            animation.SetInteger("State", 6);
             transform.Translate(0.5f * Input.GetAxis("Vertical") * speed * Time.deltaTime * Vector3.up);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Ladder")
+        if (collision.gameObject.CompareTag("Ladder"))
         {
             isClimbing = false;
+            //animation.SetInteger("State", 6);
             player.bodyType = RigidbodyType2D.Dynamic;
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Leveler")
+        {
+            collision.gameObject.GetComponent<Leveler>().DownLeveler();
+            leveler = true;
+        }
+
+        if (collision.gameObject.tag == "Door")
+        {
+            if (leveler)
+            {
+                collision.gameObject.GetComponent<door>().UnLock();
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
+        }
+    }
+
+
+    public int GetHearts() => currentHP;
 }
