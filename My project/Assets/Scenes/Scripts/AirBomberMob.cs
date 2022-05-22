@@ -13,13 +13,6 @@ public class AirBomberMob : MonoBehaviour
         bombingPoint.transform.position = new Vector3 (transform.position.x, transform.position.y - 1f, transform.position.z);
         StartCoroutine(Bombing());
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     IEnumerator Bombing()
     {
         yield return new WaitForSeconds(bombingPeriod);

@@ -7,16 +7,10 @@ public class BombFalling : MonoBehaviour
     float speedFalling = 6f;
     float timeToDisable = 8f;
     // Start is called before the first frame update
-    void Start()
-    {
-        StartCoroutine(SetDisable());
-    }
+    void Start() => StartCoroutine(SetDisable());
 
     // Update is called once per frame
-    void Update()
-    {
-        transform.Translate(Vector2.down * speedFalling * Time.deltaTime);
-    }
+    void Update() => transform.Translate(speedFalling * Time.deltaTime * Vector2.down);
 
     IEnumerator SetDisable()
     {
@@ -30,4 +24,5 @@ public class BombFalling : MonoBehaviour
         gameObject.SetActive(false);
 
     }
+
 }
