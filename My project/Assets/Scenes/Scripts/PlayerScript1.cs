@@ -12,18 +12,24 @@ public class PlayerScript1 : MonoBehaviour
     public float jumpForce = 7f;
     new Animator animation;
     int currentHP;
-    int maxHP = 3;
-    bool isHit = false;
+    readonly int maxHP = 3;
     public Main main;
     private bool isClimbing = false;
     public bool leveler = false;
-
+    public Transform deathPointAxisY;
+    public SoundsEffector soundsEffector;
+    public float DamageTimeSec = 0.2f;
+    private SpriteRenderer spriteRend;
+    private Color defaultColor;
+    public Color DamageColor = Color.red;
     // Start is called before the first frame update
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
         animation = GetComponent<Animator>();
         currentHP = maxHP;
+        spriteRend = GetComponent<SpriteRenderer>();
+        defaultColor = spriteRend.color;
     }
 
     // Update is called once per frame
@@ -40,6 +46,8 @@ public class PlayerScript1 : MonoBehaviour
             if (isGrounded && currentHP > 0 && !isClimbing) //включение анимации бега
                 animation.SetInteger("State", 2);
         }
+        if (transform.position.y < deathPointAxisY.position.y)
+            RecountHP(-3);
     }
 
     private void FixedUpdate() => player.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, player.velocity.y); //бег персонажа
@@ -55,51 +63,50 @@ public class PlayerScript1 : MonoBehaviour
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, 0.1f);
         isGrounded = colliders.Length > 1;
-        if (!isGrounded && currentHP > 0 && !isHit && !isClimbing) //включение анимации прыжка
+        if (!isGrounded && currentHP > 0 && !isClimbing) //включение анимации прыжка
             animation.SetInteger("State", 3);
     }
 
     void Jump()
     {
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded) //прыжок персонажа
+        {
             player.velocity = new Vector2(player.velocity.x, jumpForce);
+            soundsEffector.PlayJumpSound();
+        }   
     }
 
     public void RecountHP(int deltaHP) // метод перерасчета ХП 
     {
         currentHP += deltaHP; //при уменьшении поступает -1, если сделаем аптечки, то она будет давать +1
-        print(currentHP);
 
         if (deltaHP < 0) //если поступает урон
-        {
-            //StopCoroutine(OnHit());
-            isHit = true;
-            //animation.SetInteger("State", 5); Нужно как-то привязать анимацию урона
-            StartCoroutine(OnHit()); //включается цикл покраснения
-        }
-            
+            StartHitAnimation();
 
         if (currentHP <= 0)
         {
             animation.SetInteger("State", 4);
             player.velocity = Vector2.zero;
-            //Destroy(gameObject, 0.65f);
             Invoke(nameof(Lose), 1f);
         }
-            
-        IEnumerator OnHit() //цикл покраснения персонажа
+    }
+    
+    private IEnumerator OnHit()
+    {
+        var time = 0f;
+        var step = 1f / DamageTimeSec;
+        while (time < DamageTimeSec)
         {
-            GetComponent<SpriteRenderer>().color = isHit ? //если isHit, то краснеет, иначе белеет
-                new Color(1f, GetComponent<SpriteRenderer>().color.g - 0.08f, GetComponent<SpriteRenderer>().color.b - 0.08f) :
-                new Color(1f, GetComponent<SpriteRenderer>().color.g + 0.08f, GetComponent<SpriteRenderer>().color.b + 0.08f);
-            if (GetComponent<SpriteRenderer>().color.g == 1)
-                StopCoroutine(OnHit()); // откат краснения
-            if (GetComponent<SpriteRenderer>().color.g <= 0)
-                isHit = false; //снятие флага
-            yield return new WaitForSeconds(0.01f); //ожидание чтобы красный цвет был заметен
-            StartCoroutine(OnHit());
+            time += Time.deltaTime;
+            spriteRend.color = Color.Lerp(DamageColor, defaultColor, step * time);
+            yield return null;
         }
+    }
 
+    public void StartHitAnimation()
+    {
+        StopCoroutine(nameof(OnHit));
+        StartCoroutine(nameof(OnHit));
     }
 
     void Lose() => main.GetComponent<Main>().Lose();
@@ -121,29 +128,25 @@ public class PlayerScript1 : MonoBehaviour
         if (collision.gameObject.CompareTag("Ladder"))
         {
             isClimbing = false;
-            //animation.SetInteger("State", 6);
             player.bodyType = RigidbodyType2D.Dynamic;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Leveler")
+        if (collision.gameObject.CompareTag("Leveler"))
         {
             collision.gameObject.GetComponent<Leveler>().DownLeveler();
             leveler = true;
         }
 
-        if (collision.gameObject.tag == "Door")
+        if (collision.gameObject.CompareTag("Door") && leveler)
         {
-            if (leveler)
-            {
-                collision.gameObject.GetComponent<door>().UnLock();
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            }
+            collision.gameObject.GetComponent<Door>().UnLock();
+            main.GetComponent<Main>().SaveResults();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
-
-
     public int GetHearts() => currentHP;
 }
+

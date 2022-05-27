@@ -8,13 +8,28 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMenuScene.unity
     guid: 330e7179252633b41a8085284c6d06a0
-  - enabled: 0
-    path: Assets/Scenes/SampleScene 1.unity
-    guid: a325d61d6a8508b4fb86f2f6bb1f8be2
   - enabled: 1
-    path: Assets/Scenes/test.unity
+    path: Assets/Scenes/Tutorial_Scene.unity
+    guid: 316613e286048f944a62997772e5f4cb
+  - enabled: 1
+    path: Assets/Scenes/PreLvl1.unity
+    guid: 70ed5ce9fbc379b4ea5dc3b2d92bd838
+  - enabled: 1
+    path: Assets/Scenes/Level_1.unity
     guid: f2fdab69457cc1a41baa73438f742f8b
   - enabled: 1
-    path: Assets/Scenes/Settings.unity
-    guid: 53a28d7f617f520439f42826daf3a8a0
+    path: Assets/Scenes/PreLvl2.unity
+    guid: 2b91e69641da1174e9d45a442b4096f5
+  - enabled: 1
+    path: Assets/Scenes/Level_2.unity
+    guid: 7c5006707eafc31449589c98ec1ed7bd
+  - enabled: 1
+    path: Assets/Scenes/PreLvl3.unity
+    guid: a8bef979661e18f41a5ff1411b3f4232
+  - enabled: 1
+    path: Assets/Scenes/Level_3.unity
+    guid: fb184ee07368e734e93792e2fd8e3aed
+  - enabled: 1
+    path: Assets/Scenes/Win.unity
+    guid: 7fd34d71965248b45b9d7cada782bf56
   m_configObjects: {}

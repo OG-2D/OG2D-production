@@ -7,13 +7,12 @@ public class AirPatrolMob : MonoBehaviour
 {
     public Transform start;
     public Transform finish;
-    public float speed = 4f;
+    public float speed;
     private readonly float waitTime = 0.5f;
     bool canGo = true;
-    // Start is called before the first frame update
+
     void Start() => gameObject.transform.position = new Vector3(start.position.x, finish.position.y, transform.position.z);
 
-    // Update is called once per frame
     void Update()
     {
         if (canGo)

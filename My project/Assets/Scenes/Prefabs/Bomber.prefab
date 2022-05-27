@@ -103,6 +103,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 781475279885222196}
     m_Modifications:
+    - target: {fileID: 1851731274890665447, guid: ec47dca7fb535754fb537a0ee8a5d41b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -9.84
+      objectReference: {fileID: 0}
     - target: {fileID: 1851731274930619591, guid: ec47dca7fb535754fb537a0ee8a5d41b, type: 3}
       propertyPath: m_Name
       value: bomberMob

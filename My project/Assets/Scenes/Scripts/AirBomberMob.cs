@@ -6,7 +6,7 @@ public class AirBomberMob : MonoBehaviour
 {
     public GameObject bomb;
     public Transform bombingPoint;
-    public float bombingPeriod = 4f;
+    public float bombingPeriod;
     // Start is called before the first frame update
     void Start()
     {
