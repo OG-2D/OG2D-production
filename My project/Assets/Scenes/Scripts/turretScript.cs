@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class turretScript : MonoBehaviour
+/*public class turretScript : MonoBehaviour
 {
     public float Range; //дистанция поражения
     public Transform Target;
@@ -59,4 +59,4 @@ public class turretScript : MonoBehaviour
     {
         Gizmos.DrawWireSphere(transform.position, Range);
     }
-}
+}*/

@@ -15,15 +15,10 @@ public class BackGround : MonoBehaviour
         lenght = GetComponent<SpriteRenderer>().bounds.size.x;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void FixedUpdate()
     {
-        var temp = camera.transform.position.x * (1-parallaxEffect);
+        var temp = camera.transform.position.x * (1 - parallaxEffect);
         var distantion = camera.transform.position.x * parallaxEffect;
         transform.position = new Vector3(startPosition + distantion, transform.position.y, transform.position.z);
         if (temp > startPosition + lenght)

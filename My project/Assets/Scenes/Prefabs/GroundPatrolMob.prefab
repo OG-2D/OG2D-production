@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 526c8efc2da46554da624731eaef03bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 2
+  health: 3
 --- !u!61 &8917744877441650288
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0751debe072851641b3674d1fcdc8969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 8
   moveLeft: 1
   groundDetect: {fileID: 8917744878290534964}
 --- !u!1 &8917744878290534971

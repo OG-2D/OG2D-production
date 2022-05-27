@@ -10,14 +10,29 @@ public class Main : MonoBehaviour
     public Image[] hearts;
     public Sprite isLife, isDead;
     public GameObject PauseScreen;
-    public void Lose() =>SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    public SoundsEffector soundsEffector;
+    public AudioSource musicSource, soundSource;
+
+    public void Start()
+    {
+        musicSource.volume = PlayerPrefs.GetFloat("musicSlider");
+        soundSource.volume = PlayerPrefs.GetFloat("soundSlider");
+
+    }
+
+    public void Lose()
+    {
+        soundsEffector.PlayLoseSound();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+        
 
     public void Update()
     {
         for (int i = 0; i < hearts.Length; i++)
-        {
            hearts[i].sprite = player.GetHearts() > i ? isLife : isDead;
-        }
+        musicSource.volume = PlayerPrefs.GetFloat("musicSlider");
+        soundSource.volume = PlayerPrefs.GetFloat("soundSlider");
     }
 
     public void PauseOn()
@@ -39,5 +54,12 @@ public class Main : MonoBehaviour
         Lose();
         PauseOff();
         SceneManager.LoadScene(level);
+    }
+
+
+    public void SaveResults()
+    {
+        if (!PlayerPrefs.HasKey("Lvl") || PlayerPrefs.GetInt("Lvl") < SceneManager.GetActiveScene().buildIndex)
+            PlayerPrefs.SetInt("Lvl", SceneManager.GetActiveScene().buildIndex);
     }
 }

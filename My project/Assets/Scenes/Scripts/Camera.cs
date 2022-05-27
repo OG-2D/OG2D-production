@@ -6,11 +6,8 @@ public class Camera : MonoBehaviour
 {
     readonly float speed = 2f;
     private Transform target;
-    // Start is called before the first frame update
-    void Start()
-    {
-        target = GameObject.FindGameObjectWithTag("Player").transform;
-    }
+
+    void Start() => target = GameObject.FindGameObjectWithTag("Player").transform;
 
     private void LateUpdate()
     {
